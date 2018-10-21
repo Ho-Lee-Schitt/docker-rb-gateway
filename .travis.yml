@@ -5,5 +5,5 @@ language: ruby
 services:
   - docker
   
-before_install:
+script:
  - docker build -t rb_gateway .

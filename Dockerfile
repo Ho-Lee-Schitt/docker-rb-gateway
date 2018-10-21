@@ -1,7 +1,5 @@
 FROM ubuntu:18.04
 
-COPY git /git
-
 RUN apt-get update -y && \
     apt-get install --no-install-recommends -y \
     golang-go ssh git mercurial ca-certificates go-dep \

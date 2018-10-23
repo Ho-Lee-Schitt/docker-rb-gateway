@@ -1,21 +1,33 @@
 FROM ubuntu:18.04
+MAINTAINER nhughes030@gmail.com
 
 RUN apt-get update -y && \
     apt-get install --no-install-recommends -y \
-    golang-go ssh git mercurial ca-certificates go-dep \
-	apache2-utils python-pip && \
-	pip install gitpython
+                    apache2-utils \
+                    bash \
+                    ca-certificates \
+                    git \
+                    go-dep \
+                    golang-go \
+                    mercurial \
+                    python-pip \
+                    ssh && \
+    pip install gitpython
 
+RUN useradd -ms /bin/bash rb_user
+USER rb_user
+WORKDIR /home/rb_user
+    
 RUN go get -d github.com/reviewboard/rb-gateway && \
     cd ~/go/src/github.com/reviewboard/rb-gateway && \
-    mv sample_config.json config.json && dep ensure && \
+    mv sample_config.json config.json && \
+    dep ensure && \
     go build
-	
+    
 EXPOSE 8888
 
-COPY start.sh /start.sh
-COPY generate_config.py /generate_config.py
+COPY --chown=rb_user scripts scripts
 
-RUN chmod +x /start.sh /generate_config.py
+RUN chmod +x scripts/start.sh scripts/generate_config.py
 
-CMD /start.sh
+CMD bash /home/rb_user/scripts/start.sh

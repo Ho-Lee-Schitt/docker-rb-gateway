@@ -25,4 +25,4 @@ This container has one volume mount-point:
 - `/git` - The path where the the git repos are stored in the container.
 
 ## TODO
-- Implement syncing for git repos.
+- Add support for Mercurial Repos.

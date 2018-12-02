@@ -26,23 +26,23 @@ git_dir = "/git/"
 git_repos = os.listdir(git_dir)
 repo_list = []
 
+for folder in git_repos:
+    bare_repo = Repo(os.path.join(git_dir, folder))
+    if bare_repo.bare:
+        repo_list.append(bare_repo)
+
+if num_worker_threads > len(repo_list):
+    actual_worker_count = len(repo_list)
+else:
+    actual_worker_count = num_worker_threads
+
+q = Queue()
+for i in range(actual_worker_count):
+    t = Thread(target=worker)
+    t.daemon = True
+    t.start()
+
 while True:
-    for folder in git_repos:
-        bare_repo = Repo(os.path.join(git_dir, folder))
-        if bare_repo.bare:
-            repo_list.append(bare_repo)
-
-    if num_worker_threads > len(repo_list):
-        actual_worker_count = len(repo_list)
-    else:
-        actual_worker_count = num_worker_threads
-
-    q = Queue()
-    for i in range(actual_worker_count):
-        t = Thread(target=worker)
-        t.daemon = True
-        t.start()
-
     for repo in repo_list:
         q.put(repo)
 

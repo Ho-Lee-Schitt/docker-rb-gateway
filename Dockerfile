@@ -10,9 +10,10 @@ RUN apt-get update -y && \
                     go-dep \
                     golang-go \
                     mercurial \
-                    python-pip \
+                    python3 \
+                    python3-pip \
                     ssh && \
-    pip install gitpython
+    pip3 install gitpython
 
 RUN useradd -ms /bin/bash rb_user
 USER rb_user
@@ -28,6 +29,6 @@ EXPOSE 8888
 
 COPY --chown=rb_user scripts scripts
 
-RUN chmod +x scripts/start.sh scripts/generate_config.py
+RUN chmod +x scripts/start.sh scripts/generate_config.py scripts/update_git_repos.py
 
 CMD bash /home/rb_user/scripts/start.sh

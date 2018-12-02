@@ -1,18 +1,22 @@
 import os
 from queue import Queue
 from threading import Thread
-from git import Repo
+from git import Repo, exc
 from time import sleep
 
 
 def sync_repo(git_repo):
-    git_repo.remote().fetch()
+    try:
+        git_repo.remote("origin").fetch("-p")
+    except exc.GitCommandError:
+        print("Auth Error. Please add generated Public Key to Remote Service")
 
 
 def worker():
     while True:
         item = q.get()
         sync_repo(item)
+        print("Repo Synced")
         q.task_done()
 
 
@@ -28,8 +32,13 @@ while True:
         if bare_repo.bare:
             repo_list.append(bare_repo)
 
+    if num_worker_threads > len(repo_list):
+        actual_worker_count = len(repo_list)
+    else:
+        actual_worker_count = num_worker_threads
+
     q = Queue()
-    for i in range(num_worker_threads):
+    for i in range(actual_worker_count):
         t = Thread(target=worker)
         t.daemon = True
         t.start()
@@ -38,4 +47,4 @@ while True:
         q.put(repo)
 
     q.join() 
-    sleep(600)
+    sleep(300)

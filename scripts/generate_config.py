@@ -29,7 +29,7 @@ for folder in git_repos:
             known_hosts.append(new_host)
             host_data = check_output(["ssh-keyscan", new_host])
             kh = open(cwd + "/.ssh/known_hosts", "a")
-            kh.write(host_data)
+            kh.write(host_data.decode("utf-8"))
             kh.close()
         config_file["repositories"].append({"name": folder, "path": git_dir+folder, "scm": "git"})
 

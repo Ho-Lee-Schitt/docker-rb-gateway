@@ -19,11 +19,13 @@ echo "Public Key generated:"
 cat ~/.ssh/id_rsa.pub
 echo ""
 
-python ~/scripts/generate_config.py
+python3 ~/scripts/generate_config.py
 if [ $? -ne 0 ]; then
 	echo "Failed to setup"
 	exit
 fi
+
+python3 ~/scripts/update_git_repos.py&
 
 cd ~/go/src/github.com/reviewboard/rb-gateway;
 ./rb-gateway

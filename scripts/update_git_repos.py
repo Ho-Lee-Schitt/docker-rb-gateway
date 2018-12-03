@@ -20,7 +20,7 @@ def worker():
         q.task_done()
 
 
-num_worker_threads = 10
+num_worker_threads = os.getenv('THREAD_LIMIT', 10)
 cwd = os.getcwd()
 git_dir = "/git/"
 git_repos = os.listdir(git_dir)

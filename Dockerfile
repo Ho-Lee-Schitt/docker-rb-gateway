@@ -1,34 +1,42 @@
-FROM ubuntu:18.04
-MAINTAINER nhughes030@gmail.com
+#Builder
+FROM golang:alpine AS builder
+LABEL maintainer="nhughes030@gmail.com"
 
-RUN apt-get update -y && \
-    apt-get install --no-install-recommends -y \
-                    apache2-utils \
-                    bash \
-                    ca-certificates \
-                    git \
-                    go-dep \
-                    golang-go \
-                    mercurial \
-                    python3 \
-                    python3-pip \
-                    ssh && \
-    pip3 install gitpython
+RUN apk update && \
+    apk add --no-cache git mercurial dep
 
-RUN useradd -ms /bin/bash rb_user
-USER rb_user
-WORKDIR /home/rb_user
-    
+WORKDIR /go/src
+
 RUN go get -d github.com/reviewboard/rb-gateway && \
-    cd ~/go/src/github.com/reviewboard/rb-gateway && \
+    cd github.com/reviewboard/rb-gateway && \
     mv sample_config.json config.json && \
     dep ensure && \
     go build
-    
+
+# Worker
+FROM alpine
+LABEL maintainer="nhughes030@gmail.com"
+
+RUN apk update && \
+    apk add --no-cache   \
+                    apache2-utils \
+                    bash \
+                    ca-certificates \
+                    python3-dev && \
+    pip3 install gitpython
+
+RUN addgroup -S rb_group && adduser -s /bin/bash -S rb_user -G rb_group
+USER rb_user
+WORKDIR /home/rb_user
+
+RUN ["mkdir", "-p", "go/src/github.com/reviewboard"]
+
+COPY --from=builder /go/src/github.com/reviewboard/rb-gateway go/src/github.com/reviewboard/rb-gateway
+
 EXPOSE 8888
 
-COPY --chown=rb_user scripts scripts
+COPY --chown=rb_user:rb_group scripts scripts
 
 RUN chmod +x scripts/start.sh scripts/generate_config.py scripts/update_git_repos.py
 
-CMD bash /home/rb_user/scripts/start.sh
+ENTRYPOINT [ "./scripts/start.sh" ]

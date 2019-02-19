@@ -1,5 +1,7 @@
 .idea
 .vscode
-venv/*
+venv
 ienv
 git
+*.yml
+*.md

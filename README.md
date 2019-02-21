@@ -14,6 +14,9 @@ Dockerised rb-gateway tool for Reviewboard.
                 --name rb_gateway \
                 rb_gateway
 
+## Git Repos
+This repo will auto-sync any mirrored git repos placed in the git mount point every 5 minutes. To create a mirrored git repo use the command `git clone --mirror <repo>`.
+
 ## Environment Variables
 
 The container accepts the following environment variables:

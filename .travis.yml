@@ -1,9 +1,18 @@
-sudo: required
 
-language: ruby
+matrix:
+    include:
+      - language: python
+        python: 3.6
 
-services:
-  - docker
-  
-script:
- - docker build -t rb_gateway .
+        install:
+          - pip install -r requirements.txt
+
+        script: pytest
+
+      - language: ruby
+
+        services:
+          - docker
+
+        script:
+        - docker build -t rb_gateway .

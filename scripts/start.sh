@@ -27,5 +27,4 @@ fi
 
 python3 ~/scripts/update_git_repos.py&
 
-cd ~/go/src/github.com/reviewboard/rb-gateway;
 ./rb-gateway

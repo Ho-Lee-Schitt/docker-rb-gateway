@@ -1,4 +1,5 @@
 import os
+import sys
 from queue import Queue
 from threading import Thread
 from git import Repo, exc
@@ -7,7 +8,7 @@ from time import sleep
 
 def sync_repo(git_repo):
     try:
-        git_repo.remote("origin").fetch("-p")
+        git_repo.remote("origin").update()
     except exc.GitCommandError:
         print("Auth Error. Please add generated Public Key to Remote Service")
 
@@ -25,6 +26,9 @@ cwd = os.getcwd()
 git_dir = "/git/"
 git_repos = os.listdir(git_dir)
 repo_list = []
+
+if num_worker_threads == 0:
+    sys.exit(0)
 
 for folder in git_repos:
     bare_repo = Repo(os.path.join(git_dir, folder))

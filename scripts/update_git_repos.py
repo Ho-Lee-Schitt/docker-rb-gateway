@@ -21,34 +21,35 @@ def worker():
         q.task_done()
 
 
-num_worker_threads = os.getenv('THREAD_LIMIT', 10)
-cwd = os.getcwd()
-git_dir = "/git/"
-git_repos = os.listdir(git_dir)
-repo_list = []
+if __name__ == '__main__':
+    num_worker_threads = os.getenv('THREAD_LIMIT', 10)
+    cwd = os.getcwd()
+    git_dir = "/git/"
+    git_repos = os.listdir(git_dir)
+    repo_list = []
 
-if num_worker_threads == 0:
-    sys.exit(0)
+    if num_worker_threads == 0:
+        sys.exit(0)
 
-for folder in git_repos:
-    bare_repo = Repo(os.path.join(git_dir, folder))
-    if bare_repo.bare:
-        repo_list.append(bare_repo)
+    for folder in git_repos:
+        bare_repo = Repo(os.path.join(git_dir, folder))
+        if bare_repo.bare:
+            repo_list.append(bare_repo)
 
-if num_worker_threads > len(repo_list):
-    actual_worker_count = len(repo_list)
-else:
-    actual_worker_count = num_worker_threads
+    if num_worker_threads > len(repo_list):
+        actual_worker_count = len(repo_list)
+    else:
+        actual_worker_count = num_worker_threads
 
-q = Queue()
-for i in range(actual_worker_count):
-    t = Thread(target=worker)
-    t.daemon = True
-    t.start()
+    q = Queue()
+    for i in range(actual_worker_count):
+        t = Thread(target=worker)
+        t.daemon = True
+        t.start()
 
-while True:
-    for repo in repo_list:
-        q.put(repo)
+    while True:
+        for repo in repo_list:
+            q.put(repo)
 
-    q.join() 
-    sleep(300)
+        q.join() 
+        sleep(300)

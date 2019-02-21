@@ -29,9 +29,7 @@ RUN addgroup -S rb_group && adduser -s /bin/bash -S rb_user -G rb_group
 USER rb_user
 WORKDIR /home/rb_user
 
-RUN ["mkdir", "-p", "go/src/github.com/reviewboard"]
-
-COPY --from=builder /go/src/github.com/reviewboard/rb-gateway go/src/github.com/reviewboard/rb-gateway
+COPY --from=builder /go/src/github.com/reviewboard/rb-gateway/rb-gateway rb-gateway
 
 EXPOSE 8888
 

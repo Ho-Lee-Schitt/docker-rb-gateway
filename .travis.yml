@@ -16,3 +16,9 @@ matrix:
 
         script:
         - docker build -t rb_gateway .
+
+      - deploy:
+        provider: script
+        script: $DOCKER_HUB_TRIGGER
+        on:
+          branch: master

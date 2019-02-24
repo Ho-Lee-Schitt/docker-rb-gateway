@@ -16,3 +16,10 @@ matrix:
 
         script:
         - docker build -t rb_gateway .
+
+notifications: 
+  if: "branch = master"
+  webhooks: 
+    on_success: always
+    urls: 
+      - "https://butt.docker.com/api/build/v1/source/5de6ebd4-34f6-40fd-96ff-fcc13100a1c0/trigger/e2702de8-4136-41c1-b494-a51d908744a6/call/"

@@ -1,24 +1,19 @@
+stages:
+  - test
+  - name: deploy
+    if: branch = master
 
-matrix:
-    include:
-      - language: python
-        python: 3.6
-
-        install:
-          - pip install -r requirements.txt
-
-        script: pytest
-
-      - language: ruby
-
-        services:
-          - docker
-
-        script:
-        - docker build -t rb_gateway .
-
-      - deploy:
-        provider: script
-        script: $DOCKER_HUB_TRIGGER
-        on:
-          branch: master
+jobs:
+  include:
+  - stage: test
+    language: python
+    python: 3.6
+    install: pip install -r requirements.txt
+    script: pytest
+  - language: ruby
+    services: docker
+    script: docker build -t rb_gateway .
+  - stage: deploy
+    deploy:
+    provider: script
+    script: $DOCKER_HUB_TRIGGER

@@ -19,9 +19,11 @@ LABEL maintainer="nhughes030@gmail.com"
 
 RUN apk update && \
     apk add --no-cache   \
+                    git \
                     apache2-utils \
                     bash \
-                    ca-certificates \
+                    openssh \
+                    openssh-keygen \
                     python3-dev && \
     pip3 install gitpython
 

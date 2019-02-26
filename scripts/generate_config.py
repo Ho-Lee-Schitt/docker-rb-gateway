@@ -36,6 +36,7 @@ def generate_config(git_dir, update_hosts):
             config_file["repositories"].append({"name": folder, "path": git_dir+folder, "scm": "git"})
 
     if not config_file["repositories"]:
+        print("No repositories found")
         return None
     else:
         return config_file
@@ -52,6 +53,6 @@ def add_host_to_hostfile(new_host, known_hosts):
 
 if __name__ == '__main__':
     config_json = generate_config(GIT_BASE_DIR, UPDATE_HOSTFILE)
-    if not config_json:
-        with open(CWD +  "config.json", "w") as fp:
+    if config_json:
+        with open(CWD +  "/config.json", "w") as fp:
             json.dump(config_json, fp)

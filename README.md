@@ -16,6 +16,7 @@ Dockerised rb-gateway tool for Reviewboard.
 
 ## Git Repos
 This repo will auto-sync any mirrored git repos placed in the git mount point every 5 minutes. To create a mirrored git repo use the command `git clone --mirror <repo>`.
+It currently only supports git repos with git@<repo_url> style repositories.
 
 ## Environment Variables
 
@@ -23,7 +24,7 @@ The container accepts the following environment variables:
 
 - ```HTP_USER``` - the username that will be used to create the htpasswd file.
 - ```HTP_PSWD``` - the password that will be used to create the htpasswd file.
-- ```THREAD_LIMIT``` - the maximum number of threads to spawn to sync the vcm repos. Optional.
+- ```THREAD_LIMIT``` - the maximum number of threads to spawn to sync the vcm repos. Optional. Defaults to 10.
 
 This container has one volume mount-point:
 
@@ -31,3 +32,4 @@ This container has one volume mount-point:
 
 ## TODO
 - Add support for Mercurial Repos.
+- Add support for HTTPS Git Repos.

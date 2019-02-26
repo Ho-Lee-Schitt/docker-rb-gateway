@@ -17,12 +17,11 @@ def worker():
     while True:
         item = q.get()
         sync_repo(item)
-        print("Repo Synced")
         q.task_done()
 
 
 if __name__ == '__main__':
-    num_worker_threads = os.getenv('THREAD_LIMIT', 10)
+    num_worker_threads = int(os.getenv('THREAD_LIMIT', 10))
     cwd = os.getcwd()
     git_dir = "/git/"
     git_repos = os.listdir(git_dir)

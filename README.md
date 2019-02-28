@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.com/Ho-Lee-Schitt/docker-rb-gateway.svg?token=vs3DEDeFykVr9Ydk7c1J&branch=master)](https://travis-ci.com/Ho-Lee-Schitt/docker-rb-gateway)
+[![](https://images.microbadger.com/badges/image/holeeschitt/docker-rb-gateway.svg)](https://microbadger.com/images/holeeschitt/docker-rb-gateway "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/holeeschitt/docker-rb-gateway.svg)](https://microbadger.com/images/holeeschitt/docker-rb-gateway "Get your own version badge on microbadger.com")
 
 docker-rb-gateway
 ==================
